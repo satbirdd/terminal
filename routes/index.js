@@ -4,5 +4,12 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Terminal' });
+  var projects =
+    [ 'mongod',
+      'elasticsearch',
+      'Caramel-Server-Backends',
+      'Caramel-Server',
+      'Accounts',
+      'Panama']
+  res.render('index', { title: 'Terminal', projects: projects });
 };

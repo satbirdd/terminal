@@ -12,17 +12,43 @@
     <h1><%= title %></h1>
     <div class="tabbable">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Section 1</a></li>
-        <li><a href="#tab2" data-toggle="tab">Section 2</a></li>
+        <% projects.forEach(function(project, index) { %>
+          <li <%= index == 0 ? "class=active" : "" %>>
+            <a href="#<%= project %>" data-toggle="tab"><%= project %></a>
+          </li>
+        <% }) %>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
-          <p>I'm in Section 1.</p>
-          <textarea class="terminal"></textarea>
+        <% projects.forEach(function(project, index) { %>
+          <div class="tab-pane <%= index == 0 ? "active" : "" %>" id=<%= project %> >
+            <p>Logs from <%= project %></p>
+            <textarea class="terminal <%= project %>"></textarea>
+          </div>
+        <% }) %>
+        <!-- <div class="tab-pane active" id="mongod">
+          <p>Logs from mongod</p>
+          <textarea class="terminal-mongod"></textarea>
         </div>
-        <div class="tab-pane" id="tab2">
-          <p>Howdy, I'm in Section 2.</p>
+        <div class="tab-pane" id="elasticsearch">
+          <p>Howdy, I'm in elasticsearch.</p>
+          <textarea class="terminal-mongod"></textarea>
         </div>
+        <div class="tab-pane" id="Caramel-Server-Backends">
+          <p>Howdy, I'm in Caramel-Server-Backends.</p>
+          <textarea class="terminal-mongod"></textarea>
+        </div>
+        <div class="tab-pane" id="Caramel-Server">
+          <p>Howdy, I'm in Caramel-Server.</p>
+          <textarea class="terminal-mongod"></textarea>
+        </div>
+        <div class="tab-pane" id="Accounts">
+          <p>Howdy, I'm in Accounts.</p>
+          <textarea class="terminal-mongod"></textarea>
+        </div>
+        <div class="tab-pane" id="Panama">
+          <p>Howdy, I'm in Panama.</p>
+          <textarea class="terminal-mongod"></textarea>
+        </div> -->
       </div>
     </div>
     <script>
