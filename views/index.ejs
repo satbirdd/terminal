@@ -28,17 +28,16 @@
       </div>
     </div>
     <script>
-      var socket = io.connect('http://localhost');
-      var project = 'todo';
-      socket.on(project, function(data) {
-        $('.terminal').append(data.out || data.err)
-      });
+      <% projects.forEach(function(project, index) { %>
+        var socket = io.connect('http://localhost');
+        socket.on("<%= project %>", function(data) {
+          $('.terminal.<%= project %>').append(data.out || data.err)
+        });
 
-      socket.emit('new_project', {
-        project: project,
-        args: "cd && cd ruby/todos && rails s -p 5000"
-      })
-
+        socket.emit('new_project', {
+          project: "<%= project %>"
+        })
+      <% }) %>
     </script>
   </body>
 </html>
