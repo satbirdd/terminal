@@ -46,6 +46,6 @@ io.sockets.on('connection', function(socket) {
   socket.on('new_project', function(data) {
     var project = data.project
       , args = data.args;
-    Terminal(project, socket, args);
+    Terminal(project, socket);
   })
 });
