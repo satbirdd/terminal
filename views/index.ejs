@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/jquery-1.10.2.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <textarea class="terminal"></textarea>
+    <script>
+      var socket = io.connect('http://localhost');
+      var project = 'todo';
+      socket.on(project, function(data) {
+        $('.terminal').append(data.out || data.err)
+      });
+
+      socket.emit('new_project', {
+        project: project,
+        args: "cd && cd ruby/todos && rails s -p 5000"
+      })
+
+    </script>
+  </body>
+</html>
