@@ -28,8 +28,10 @@
       </div>
     </div>
     <script>
+      var sockets = {};
       <% projects.forEach(function(project, index) { %>
         var socket = io.connect('http://localhost');
+        sockets["<%= project %>"] = socket;
         socket.on("<%= project %>", function(data) {
           $('.terminal.<%= project %>').append(data.out || data.err)
         });
