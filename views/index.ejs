@@ -23,22 +23,40 @@
           <div class="tab-pane <%= index == 0 ? "active" : "" %>" id=<%= project %> >
             <p>
               Logs from <%= project %>
-              <a class="restart btn" href='javascript: void(0);'>重启</a>
+              <a class="restart btn" data-project="<%= project %>" href='javascript: void(0);'>重启</a>
             </p>
             <textarea class="terminal <%= project %>"></textarea>
+            <label for="terminal-input">
+              <input class="terminal-input input" id="terminal-input" data-project="<%= project %>">
+            </label>
           </div>
         <% }) %>
       </div>
     </div>
     <script>
-      var socket = io.connect('http://localhost');
-      <% projects.forEach(function(project, index) { %>
-        socket.on("<%= project %>", function(data) {
-          $('.terminal.<%= project %>').append(data.out || data.err)
-        });
-      <% }) %>
+      $(function(){
+        var socket = io.connect('http://localhost');
+        <% projects.forEach(function(project, index) { %>
+          socket.on("<%= project %>", function(data) {
+            $('.terminal.<%= project %>').append(data.out || data.err)
+          });
+        <% }) %>
 
-      socket.emit('init_projects', {projects: ["<%= projects %>"]})
+        socket.emit('init_projects', {projects: ["<%= projects %>"]})
+
+        $('.restart').click(function(event) {
+          var project = $(this).attr('data-project');
+          socket.emit("restart", {project: project});
+        })
+
+        $('.terminal-input').keypress(function(event) {
+          debugger
+          if (13 == event.keyCode) {
+            socket.emit('input', {command: $(this).val()})
+            $(this).val('');
+          }
+        })
+      })
     </script>
   </body>
 </html>
