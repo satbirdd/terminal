@@ -50,9 +50,9 @@
         })
 
         $('.terminal-input').keypress(function(event) {
-          debugger
+          var project = $(this).attr('data-project');
           if (13 == event.keyCode) {
-            socket.emit('input', {command: $(this).val()})
+            socket.emit(project + "_input", {command: $(this).val()})
             $(this).val('');
           }
         })
