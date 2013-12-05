@@ -29,6 +29,10 @@
             <label for="terminal-input">
               <input class="terminal-input input" id="terminal-input" data-project="<%= project %>">
             </label>
+            <textarea class="terminal-interact <%= project %>"></textarea>
+            <label for="terminal-interact-input">
+              <input class="terminal-interact-input input" id="terminal-interact-input" data-project="<%= project %>">
+            </label>
           </div>
         <% }) %>
       </div>
@@ -39,6 +43,10 @@
         <% projects.forEach(function(project, index) { %>
           socket.on("<%= project %>", function(data) {
             $('.terminal.<%= project %>').append(data.out || data.err)
+          });
+          socket.on("<%= project %>-interact", function(data) {
+            debugger
+            $('.terminal-interact.<%= project %>').append(data.out || data.err)
           });
         <% }) %>
 
@@ -53,6 +61,14 @@
           var project = $(this).attr('data-project');
           if (13 == event.keyCode) {
             socket.emit(project + "_input", {command: $(this).val()})
+            $(this).val('');
+          }
+        })
+
+        $('.terminal-interact-input').keypress(function(event) {
+          var project = $(this).attr('data-project');
+          if (13 == event.keyCode) {
+            socket.emit(project + "_interact_input", {command: $(this).val()})
             $(this).val('');
           }
         })

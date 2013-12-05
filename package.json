@@ -9,6 +9,7 @@
     "express": "3.4.6",
     "ejs": "*",
     "stylus": "*",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "escape-html": "~1.0.0"
   }
 }
