@@ -40,29 +40,34 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 });
 
 var io = require('socket.io').listen(server);
-
+var processes = {};
 
 io.sockets.on('connection', function(socket) {
-  var processes = {};
-
   socket.on('new_project', function(data) {
     var project = data.project;
-    var child_process = Terminal(project, socket);
-    processes[project] = child_process;
+    processes[project] = Terminal(project, socket);
+  })
+
+  socket.on('init_projects', function(data) {
+    var projects = data.projects;
+    projects.forEach(function(project) {
+      if (processes[project]) {
+        socket.emit(project, {out: "====== page reload ======"})
+        processes[project].bind_socket(socket);
+      } else {
+        processes[project] = Terminal(project, socket);
+      }
+    })
   })
 
   socket.on('restart', function(data) {
     var project = data.project;
-    console.log('......... restart ..........')
     console.log(!!processes[project], !!project)
     if (processes[project] && project) {
       processes[project].on("exit", function(feedback) {
         if (0 == feedback) {
-          var child_process = Terminal(project, socket);
-          processes[project] = child_process;
-          console.log('........ restart', feedback, '..........')
+          processes[project] = Terminal(project, socket);
         } else {
-          console.log('........no restart', feedback, '..........')
         }
       })
       processes[project].kill();

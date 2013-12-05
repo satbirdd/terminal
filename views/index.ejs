@@ -21,25 +21,24 @@
       <div class="tab-content">
         <% projects.forEach(function(project, index) { %>
           <div class="tab-pane <%= index == 0 ? "active" : "" %>" id=<%= project %> >
-            <p>Logs from <%= project %></p>
+            <p>
+              Logs from <%= project %>
+              <a class="restart btn" href='javascript: void(0);'>重启</a>
+            </p>
             <textarea class="terminal <%= project %>"></textarea>
           </div>
         <% }) %>
       </div>
     </div>
     <script>
-      var sockets = {};
+      var socket = io.connect('http://localhost');
       <% projects.forEach(function(project, index) { %>
-        var socket = io.connect('http://localhost');
-        sockets["<%= project %>"] = socket;
         socket.on("<%= project %>", function(data) {
           $('.terminal.<%= project %>').append(data.out || data.err)
         });
-
-        socket.emit('new_project', {
-          project: "<%= project %>"
-        })
       <% }) %>
+
+      socket.emit('init_projects', {projects: ["<%= projects %>"]})
     </script>
   </body>
 </html>
