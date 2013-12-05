@@ -43,19 +43,29 @@ var io = require('socket.io').listen(server);
 
 
 io.sockets.on('connection', function(socket) {
-  var child_process;
-  var project;
+  var processes = {};
+
   socket.on('new_project', function(data) {
-    project = data.project;
-    child_process = Terminal(project, socket);
+    var project = data.project;
+    var child_process = Terminal(project, socket);
+    processes[project] = child_process;
   })
 
   socket.on('restart', function(data) {
-    console.log(">>>>>>>>>>>>", child_process, !!project, "<<<<<<<<<<<<<<<<<")
-    if (child_process && project) {
-      console.log("======== restart ============")
-      child_process.kill('SIGKILL');
-      child_process = Terminal(project, socket);
+    var project = data.project;
+    console.log('......... restart ..........')
+    console.log(!!processes[project], !!project)
+    if (processes[project] && project) {
+      processes[project].on("exit", function(feedback) {
+        if (0 == feedback) {
+          var child_process = Terminal(project, socket);
+          processes[project] = child_process;
+          console.log('........ restart', feedback, '..........')
+        } else {
+          console.log('........no restart', feedback, '..........')
+        }
+      })
+      processes[project].kill();
     }
   })
 });
