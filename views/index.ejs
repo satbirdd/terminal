@@ -25,12 +25,12 @@
               Logs from <%= project %>
               <a class="restart btn" data-project="<%= project %>" href='javascript: void(0);'>重启</a>
             </p>
-            <textarea class="terminal <%= project %>"></textarea>
-            <label for="terminal-input">
+            <textarea class="terminal <%= project %>" data-project="<%= project %>" readonly></textarea>
+            <label for="terminal-input"> >> 
               <input class="terminal-input input" id="terminal-input" data-project="<%= project %>">
             </label>
-            <textarea class="terminal-interact <%= project %>"></textarea>
-            <label for="terminal-interact-input">
+            <textarea class="terminal-interact <%= project %>" data-project="<%= project %>" readonly></textarea>
+            <label for="terminal-interact-input"> >> 
               <input class="terminal-interact-input input" id="terminal-interact-input" data-project="<%= project %>">
             </label>
           </div>
@@ -84,6 +84,17 @@
           $('.terminal-interact.'+ project).height("150px");
           $('.terminal-interact.'+ project).scrollTop($('.terminal-interact.'+ project)[0].scrollHeight);
           $('.terminal.'+ project).scrollTop($('.terminal.'+ project)[0].scrollHeight);
+        })
+
+        $('.terminal').click(function(event) {
+          var project = $(this).attr('data-project');
+          $('.terminal-input[data-project=' + project +']').focus();
+        })
+
+        $('.terminal-interact').click(function(event) {
+          debugger
+          var project = $(this).attr('data-project');
+          $('.terminal-interact-input[data-project=' + project +']').focus();
         })
 
         $('.terminal-interact-input').keypress(function(event) {
