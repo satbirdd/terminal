@@ -40,17 +40,22 @@
     <script>
       $(function(){
         var socket = io.connect('http://localhost');
+        var projects = [];
         <% projects.forEach(function(project, index) { %>
+          projects.push("<%= project %>")
           socket.on("<%= project %>", function(data) {
-            $('.terminal.<%= project %>').append(data.out || data.err)
+            $('.terminal.<%= project %>').append(data.out || data.err);
+            $('.terminal.<%= project %>').scrollTop($('.terminal.<%= project %>')[0].scrollHeight);
+            // var textarea = document.getElementById('textarea_id');
+            // textarea.scrollTop = textarea.scrollHeight;
           });
           socket.on("<%= project %>-interact", function(data) {
-            debugger
-            $('.terminal-interact.<%= project %>').append(data.out || data.err)
+            $('.terminal-interact.<%= project %>').append(data.out || data.err);
+            $('.terminal-interact.<%= project %>').scrollTop($('.terminal-interact.<%= project %>')[0].scrollHeight);
           });
         <% }) %>
 
-        socket.emit('init_projects', {projects: ["<%= projects %>"]})
+        socket.emit('init_projects', {projects: projects})
 
         $('.restart').click(function(event) {
           var project = $(this).attr('data-project');

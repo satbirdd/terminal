@@ -50,6 +50,7 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('init_projects', function(data) {
     var projects = data.projects;
+    console.log('--------', projects, '-----------')
     projects.forEach(function(project) {
       if (processes[project]) {
         socket.emit(project, {out: "====== page reload ======"})
