@@ -70,6 +70,22 @@
           }
         })
 
+        $('.terminal-interact-input').focus(function(event) {
+          var project = $(this).attr('data-project');
+          $('.terminal.'+ project).height("150px");
+          $('.terminal-interact.'+ project).height("400px");
+          $('.terminal-interact.'+ project).scrollTop($('.terminal-interact.'+ project)[0].scrollHeight);
+          $('.terminal.'+ project).scrollTop($('.terminal.'+ project)[0].scrollHeight);
+        })
+
+        $('.terminal-interact-input').blur(function(event) {
+          var project = $(this).attr('data-project');
+          $('.terminal.'+ project).height("400px");
+          $('.terminal-interact.'+ project).height("150px");
+          $('.terminal-interact.'+ project).scrollTop($('.terminal-interact.'+ project)[0].scrollHeight);
+          $('.terminal.'+ project).scrollTop($('.terminal.'+ project)[0].scrollHeight);
+        })
+
         $('.terminal-interact-input').keypress(function(event) {
           var project = $(this).attr('data-project');
           if (13 == event.keyCode) {

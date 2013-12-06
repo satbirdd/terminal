@@ -65,7 +65,7 @@ io.sockets.on('connection', function(socket) {
     var project = data.project;
     console.log(!!processes[project], !!project)
     if (processes[project] && project) {
-      processes[project].on("exit", function(feedback) {
+      processes[project]['app'].on("exit", function(feedback) {
         if (0 == feedback) {
           processes[project] = Terminal(project, socket);
         } else {
