@@ -66,10 +66,12 @@ io.sockets.on('connection', function(socket) {
     console.log(!!processes[project], !!project)
     if (processes[project] && project) {
       processes[project]['app'].on("exit", function(feedback) {
-        if (0 == feedback) {
-          processes[project] = Terminal(project, socket);
-        } else {
-        }
+        console.log('=======================>',feedback)
+        // if (0 == feedback) {
+        // diffrent values in diffrent systems(computers)?
+        processes[project] = Terminal(project, socket);
+        // } else {
+        // }
       })
       processes[project].kill();
     }
