@@ -4,8 +4,11 @@ html body {
   background-color: #36648b;
   color: #fff;
 }
-a {
-  color: #00b7ff;
+.nav>li>a {
+  color: #fff;
+}
+.nav>li>a:hover {
+  color: #08c;
 }
 label {
   position: relative;
